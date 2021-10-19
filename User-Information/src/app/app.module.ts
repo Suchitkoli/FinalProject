@@ -11,12 +11,18 @@ import { FormsModule } from '@angular/forms';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { RouterModule } from '@angular/router';
 import { ErrorInterceptor } from './services/error.interceptor';
+import { Step1Component } from './userdetail/step1/step1.component';
+import { Step2Component } from './userdetail/step2/step2.component';
+import { Step3Component } from './userdetail/step3/step3.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     UserdetailComponent,
-    DashboardComponent
+    DashboardComponent,
+    Step1Component,
+    Step2Component,
+    Step3Component
   ],
   imports: [
     BrowserModule,
@@ -29,7 +35,7 @@ import { ErrorInterceptor } from './services/error.interceptor';
     RouterModule.forRoot([
       {path:'',redirectTo:'dashboard',pathMatch:'full'},
       {path:'dashboard',component:DashboardComponent},
-      {path:'userdetail',component:UserdetailComponent}
+      {path:'userdetail/:id',component:UserdetailComponent}
     ])
   
   ],

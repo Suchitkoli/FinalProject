@@ -1,8 +1,10 @@
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { User } from '../model/user.model';
 import { UserService } from '../services/user.service';
@@ -10,96 +12,133 @@ import { UserService } from '../services/user.service';
 @Component({
   selector: 'app-userdetail',
   templateUrl: './userdetail.component.html',
-  styleUrls: ['./userdetail.component.css']
+  styleUrls: ['./userdetail.component.css'],
+  providers:[{
+    provide:STEPPER_GLOBAL_OPTIONS,useValue:{
+      displayDefauktIndicatorTyoe:false
+    }
+  }]
 })
 export class UserdetailComponent implements OnInit {
 
-  constructor(private userservice:UserService,private formbulider: FormBuilder,private router:Router) { }
+  constructor(private userservice:UserService,private formbulider: FormBuilder,private router:Router,private activatedroute:ActivatedRoute,private _snackBar: MatSnackBar) { }
 
+  get formArray(): FormArray | null { return this.appForm.get('formArray') as FormArray }
 
+  appForm!:FormGroup
   isLinear = false;
-  firstFormGroup!: FormGroup;
-  secondFormGroup!: FormGroup;
-  thirdFormGroup!:FormGroup
+ 
   dataSaved = false;
   userForm:any
   length!:User[]
   userInfo!:Observable<User[]>
   userIdUpdate :string|undefined|null
-  massage:string|undefined|null
-  
+  message:string|undefined|null
+  uid:any
   ngOnInit(): void {
 
-    this.userForm=this.formbulider.group(
-     {
-        id:[''],
-        first_name:['',[Validators.required]],
-        middle_name:['',[Validators.required]],
-        last_name:['',[Validators.required]],
-        date_of_birth:['',[Validators.required]],
-        email:['',[Validators.required]],
-        phone_no:['',[Validators.required]],
-        add_city:['',[Validators.required]],
-        add_state:['',[Validators.required]],
-        add_zip:['',[Validators.required]],
-        add_createdon:['',[Validators.required]],
-      } );
-
-      this.firstFormGroup = this.formbulider.group({
-        id:['2'],
-        first_name:['',[Validators.required]],
-        middle_name:['',[Validators.required]],
-        last_name:['',[Validators.required]],
-        date_of_birth:['',[Validators.required]],
-        email:['',[Validators.required]],
-        phone_no:['',[Validators.required]],
-        add_city:['',[Validators.required]],
-        add_state:['',[Validators.required]],
-        add_zip:['',[Validators.required]],
-      
-      });
+    this.appForm=this.formbulider.group( {
     
-      this.secondFormGroup=this.formbulider.group({
-        add_city:['',[Validators.required]],
-        add_state:['',[Validators.required]],
-        add_zip:['',[Validators.required]],
+      formArray : this.formbulider.array([
+        
+        this.formbulider.group({
+          id:['2'],
+          first_name:['',[Validators.required]],
+          middle_name:['',[Validators.required]],
+          last_name:['',[Validators.required]],
+          date_of_birth:['',[Validators.required]],
+          email:['',[Validators.required,  Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
+          phone_no:['',[Validators.required,Validators.pattern("pattern=[\d{10}$]")]],
+        }),
+        this.formbulider.group({
+          add_city:['',[Validators.required]],
+          add_state:['',[Validators.required]],
+          add_zip:['',[Validators.required]],
+          createdon: new Date()
 
+        }),
+      ])
+      } );
+      this.activatedroute.paramMap.subscribe(param => {
+        this.uid=param.get('id');
+        console.log("uid",param)
+        if(this.uid != -1){
+          this.loadUserEdit(this.uid)
+        }
       })
-      
-
+    
       this.loadAllUsers();
     
   }
 
 
   loadAllUsers(){
+
     this.userInfo=this.userservice.getAllUser()
 
   }
+  public getValue(index: number, controlName: string) {
+    if (this.formArray && this.formArray.controls[index]) {
+      if (this.formArray.controls[index].get(controlName).value) {
+       
+          return this.formArray.controls[index].get(controlName).value
+        }
+      }
+    }
+  
 
+
+users:Array<User>=new Array()
   onFormSubmit() {
     this.dataSaved = false;
-    const user = this.firstFormGroup.value;
-    this.CreateUser(user);
-    this.userForm.reset();
-  }
+    const user = this.appForm.value
+    console.log("user created",user)
+
+    console.log("Users information",this.users)
+
+    let userinfo:User =new User()
+
+    userinfo.first_name=this.getValue(0,'first_name')
+    userinfo.middle_name=this.getValue(0,'middle_name')
+    userinfo.last_name=this.getValue(0,'last_name')
+    userinfo.date_of_birth=this.getValue(0,'date_of_birth')
+    userinfo.email=this.getValue(0,'email')
+    userinfo.phone_no=this.getValue(0,'phone_no')
+    userinfo.add_city=this.getValue(1,'add_city')
+    userinfo.add_state=this.getValue(1,'add_state')
+    userinfo.add_zip=this.getValue(1,'add_zip')
+    userinfo.createdon=this.getValue(1,'createdon')
+    console.log("get value",userinfo)
+    
+    this.CreateUser(userinfo);
+  
+}
+
 
   loadUserEdit(userid: string) {
-    this.userservice.getUserById(userid).subscribe(user => {
+    this.userservice.getUserById(this.uid).subscribe(user => {
       console.log("user",user)
-      this.massage = null;
+      this.message = null;
       this.dataSaved = false;
       this.userIdUpdate = user.id;
-      this.firstFormGroup.controls['first_name'].setValue(user.first_name);
-      this.firstFormGroup.controls['middle_name'].setValue(user.middle_name);
-      this.firstFormGroup.controls['last_name'].setValue(user.last_name);
-      this.firstFormGroup.controls['date_of_birth'].setValue(user.date_of_birth);
-      this.firstFormGroup.controls['email'].setValue(user.email);
-      this.firstFormGroup.controls['phone_no'].setValue(user.phone_no);
-      this.firstFormGroup.controls['add_city'].setValue(user.add_city);
-      this.firstFormGroup.controls['add_state'].setValue(user.add_state);
-      this.firstFormGroup.controls['add_zip'].setValue(user.add_zip);
-      
+      let userinfo:User=new User;
+     this.formArray.controls[0].setValue(
+     {
+       id:(user.id),
+       first_name:(user.first_name),
+       middle_name:(user.middle_name),
+       last_name:(user.last_name),
+       date_of_birth:(user.date_of_birth),
+       email:(user.email),
+       phone_no:(user.phone_no)
+     
+     }
+      )
+      this.formArray.controls[1].setValue({
+        add_city:(user.add_city),
+        add_state:(user.add_state),
+        add_zip:(user.add_zip)
+      })
     });
 
   }
@@ -111,38 +150,28 @@ export class UserdetailComponent implements OnInit {
         () => {
           this.dataSaved = true;
           const msg ='Record saved Successfully'
-          this.massage =msg;
+          this.message =msg;
           this.loadAllUsers();
           this.userIdUpdate=null;
-          this.userForm.reset();
+          this.appForm.reset();
         }
       );
     } else {
       user.id = this.userIdUpdate;
       this.userservice.updateUser(user).subscribe(() => {
         this.dataSaved = true;
-        this.massage = 'Record Updated Successfully';
+        this.message = 'Record Updated Successfully';
         this.loadAllUsers();
         this.userIdUpdate = null;
-        this.userForm.reset();
+        this.appForm.reset();
       });
     }
   }
-  deleteUser(userid: string) {
-    if (confirm("Are you sure you want to delete this ?")) {  
-    this.userservice.deleteUserById(userid).subscribe(() => {
-      this.dataSaved = true;
-      this.massage = 'Record Deleted Succefully';
-      this.loadAllUsers();
-      this.userIdUpdate = null;
-      this.firstFormGroup.reset();
-
-    });
-  }
-}
+ 
 
   displayedColumns: string[] = ['first_name', 'middle_name', 'last_name','date_of_birth','email','phone_no','add_city','add_state','add_zip','edit','delete','addUser'];
   dataSource =this.userInfo
   clickedRows = new Set<User>()
+ 
 
 }

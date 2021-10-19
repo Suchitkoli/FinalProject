@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import { User } from '../model/user.model';
 
 @Injectable({
@@ -8,21 +9,23 @@ import { User } from '../model/user.model';
 })
 export class UserService {
 
-  url='https://localhost:44329/Api/User'
-  constructor(private http:HttpClient) { }
+  url = `${environment.api_user_endpoint}/User`;
+  constructor(private http: HttpClient) { }
 
-  getAllUser():Observable<User[]>{
-    return this.http.get<User[]>(this.url+'/AllUserDetails')
+  getAllUser(): Observable<User[]> {
+    const url=environment.api_user_endpoint +`/User/AllUserDetails`;
+    return this.http.get<User[]>(url)
   }
 
   getUserById(id: string): Observable<User> {
-    return this.http.get<User>(this.url + '/GetUserDetailsById/' + id);
+    const url = environment.api_user_endpoint + `/User/GetUserDetailsById/${id}`;
+    return this.http.get<User>(url);
   }
 
   createUser(user: User): Observable<User> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    
-    return this.http.post<User>(   this.url + '/PostUser/', user, httpOptions);
+
+    return this.http.post<User>(this.url + '/PostUser/', user, httpOptions);
   }
 
   updateUser(user: User): Observable<User> {
@@ -30,7 +33,7 @@ export class UserService {
     return this.http.put<User>(this.url + '/UpdateUserDetails/', user, httpOptions);
   }
 
-  deleteUserById(id:string): Observable<number> {
+  deleteUserById(id: string): Observable<number> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.delete<number>(this.url + '/DeleteUserDetails?id=' + id, httpOptions);
   }

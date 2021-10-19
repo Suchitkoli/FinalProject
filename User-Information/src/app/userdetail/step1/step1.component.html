@@ -1,0 +1,37 @@
+<form [formGroup]="appForm">
+    <ng-template matStepLabel>Fill out your name</ng-template>
+  
+    <mat-form-field appearance="fill">
+      <mat-label>First_Name</mat-label>
+      <input matInput   placeholder="First name" formControlName="first_name" required>
+    </mat-form-field><br><br>
+    
+    <mat-form-field appearance="fill">
+      <mat-label>Middle_Name</mat-label>
+        <input matInput  placeholder="Middle name"  formControlName="middle_name" required>
+      </mat-form-field><br><br>
+    
+      <mat-form-field appearance="fill">
+        <mat-label>Last_Name</mat-label>
+        <input matInput  placeholder="Last name" formControlName="last_name" required>
+      </mat-form-field><br><br>
+      
+      <mat-form-field appearance="fill">
+        <mat-label>date_of_birth</mat-label>
+        <input matInput  placeholder="date_of_birth" formControlName="date_of_birth" required>
+      </mat-form-field><br><br>
+    
+      <mat-form-field appearance="fill">
+        <mat-label>email</mat-label>
+        <input matInput  placeholder="email" formControlName="email" required>
+      </mat-form-field><br><br>
+     
+      <mat-form-field appearance="fill">
+        <mat-label>phone_no</mat-label>
+        <input matInput  placeholder="phone_no" formControlName="phone_no" required>
+      </mat-form-field><br><br>
+    <div>
+      <button mat-button matStepperNext [disabled]="!appForm.valid" >Next</button>
+    
+    </div>
+  </form>

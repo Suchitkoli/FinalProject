@@ -1,0 +1,79 @@
+<div fxLayout="row" fxLayout.sm="row" fxLayout.xs="column" fxLayoutFap="10px" class="pb-25">
+
+    <div fxFlex="80" fxFlex.sm="75" fxFlex.xs="100"
+         class="pt-15 ml-0 mat-subheading-2">
+      <div fxLayout="row" fxLayout.sm="row" fxLayout.xs="column" fxLayoutgap="10px">
+        <div fxFlex="30" fxFlex.sm="33" fxFlex.xs="80" class="pl-25 pr-25">
+          <mat-form-field appearance="standard" style="width: 100% !important;">
+            <mat-label>First Name</mat-label>
+            <input matInput [value]="getValue(0, 'first_name')" readonly />
+          </mat-form-field>
+        </div>
+  
+        <div fxFlex="30" fxFlex.sm="33" fxFlex.xs="80" class="pl-25 pr-25">
+          <mat-form-field appearance="standard" style="width: 100% !important;">
+            <mat-label>Middle Name</mat-label>
+            <input matInput [value]="getValue(0, 'middle_name')" readonly />
+          </mat-form-field>
+        </div>
+  
+        <div fxFlex="30" fxFlex.sm="33" fxFlex.xs="80" class="pl-25 pr-25">
+          <mat-form-field appearance="standard" style="width: 100% !important;">
+            <mat-label>Last Name</mat-label>
+            <input matInput [value]="getValue(0, 'last_name')" readonly />
+          </mat-form-field>
+        </div>
+      </div>
+      
+       
+      <div fxLayout="row" fxLayout.sm="row" fxLayout.xs="column" fxLayoutgap="10px">
+        <div fxFlex="38" fxFlex.sm="33" fxFlex.xs="80" class="pl-25 pr-25">
+          <mat-form-field appearance="standard" style="width: 100% !important;">
+            <mat-label>Email</mat-label>
+            <input matInput [value]="getValue(0, 'date_of_birth')" readonly>
+          </mat-form-field>
+        </div>
+  
+  
+      <div fxLayout="row" fxLayout.sm="row" fxLayout.xs="column" fxLayoutgap="10px">
+        <div fxFlex="38" fxFlex.sm="33" fxFlex.xs="80" class="pl-25 pr-25">
+          <mat-form-field appearance="standard" style="width: 100% !important;">
+            <mat-label>Email</mat-label>
+            <input matInput [value]="getValue(0, 'email')" readonly>
+          </mat-form-field>
+        </div>
+  
+        <div fxFlex="26" fxFlex.sm="33" fxFlex.xs="80" class="pl-25 pr-25">
+          <mat-form-field appearance="standard" style="width: 100% !important;">
+            <mat-label>Student's Phone Number</mat-label>
+            <input matInput [value]="getValue(0, 'phone_no')" readonly>
+          </mat-form-field>
+        </div>
+  
+        <div fxFlex="26" fxFlex.sm="33" fxFlex.xs="80" class="pl-25 pr-25">
+          <mat-form-field appearance="standard" style="width: 100% !important;">
+            <mat-label>Parent's Phone Number</mat-label>
+            <input matInput [value]="getValue(1, 'add_city')" readonly>
+          </mat-form-field>
+        </div>
+      </div>
+  
+      <div fxLayout="row" fxLayoutgap="10px">
+        <div fxFlex="90" fxFlex.sm="100" fxFlex.xs="100" class="pl-25 pr-25">
+          <mat-form-field appearance="standard" style="width: 100% !important;">
+            <mat-label>Address</mat-label>
+            <input matInput [value]="getValue(1, 'add_state')" readonly>
+          </mat-form-field>
+        </div>
+      </div>
+  
+      <div fxLayout="row" fxLayout.sm="row" fxLayout.xs="column" fxLayoutgap="10px">
+        <div class="pl-25 pr-25" fxFlex="25" fxFlex.sm="20" fxFlex.xs="100">
+          <mat-form-field appearance="standard" style="width: 100% !important;">
+            <mat-label>Zip</mat-label>
+            <input matInput [value]="getValue(1, 'add_zip')">
+          </mat-form-field>
+        </div>
+      </div>
+      </div>
+      

@@ -1,13 +1,22 @@
 
-  <table mat-table [dataSource]="userInfo" class="mat-elevation-z8" style="max-width: 100%; min-width: 100%;">
+
+
+  <table mat-table [dataSource]="userInfo" class="mat-elevation-z8" style="  max-width: 100%; min-width: 100%;  background-color: rgb(255, 255, 255);  ">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
-  
+          <tr
+
+          mat-row
+          (click)="clickedRows.add(row)"
+          [class.demo-row-is-clicked]="clickedRows.has(row)"
+          *matRowDef="let row; columns: displayedColumns;" >
+         
+        </tr>
     <!-- Position Column -->
-    <ng-container matColumnDef="first_name">
+    <ng-container matColumnDef="first_name"  >
       <th mat-header-cell *matHeaderCellDef> FirstName </th>
-      <td mat-cell *matCellDef="let element"> {{element.first_name+" "+element.middle_name+" "+element.last_name}} </td>
+      <td mat-cell *matCellDef="let element"  matTooltip=" Click to Edit this record" (click)="loadUserEdit(element.id)" > {{element.first_name+" "+element.middle_name+" "+element.last_name}} </td>
     </ng-container>
     <ng-container matColumnDef="middle_name" style="display: none;">
       <th mat-header-cell *matHeaderCellDef style="display: none;"> FirstName </th>
@@ -20,13 +29,13 @@
     <!-- Name Column -->
     <ng-container matColumnDef="date_of_birth">
       <th mat-header-cell *matHeaderCellDef> Date Of Birth </th>
-      <td mat-cell *matCellDef="let element"> {{" "+element.date_of_birth+"  "+" "}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.date_of_birth|date}} </td>
     </ng-container>
   
     <!-- Weight Column -->
     <ng-container matColumnDef="email">
       <th mat-header-cell *matHeaderCellDef> Email</th>
-      <td mat-cell *matCellDef="let element"> {{" "+element.email+" "+" "}} </td>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
     </ng-container>
   
     <ng-container matColumnDef="phone_no">
@@ -50,35 +59,27 @@
     </ng-container>
 
     <ng-container matColumnDef="edit">
-      <th mat-header-cell *matHeaderCellDef> Action</th>
-      <td mat-cell *matCellDef="let element"><button mat-raised-button color="primary"  type="button" class="btn btn-info" matTooltip="Edit this record" (click)="loadUserEdit(element.id)">Edit</button> </td>
+      <th mat-header-cell *matHeaderCellDef>Edit</th>
+      <td mat-cell *matCellDef="let element"><button mat-button  type="button" class="btn btn-info" matTooltip="Edit this record"  (click)="loadUserEdit(element.id)">
+        <i class="fas fa-edit"></i></button> </td>
     </ng-container>
 
     <ng-container matColumnDef="delete">
-      <th mat-header-cell *matHeaderCellDef> Action</th>
-      <td mat-cell *matCellDef="let element"><button mat-raised-button color="warn"  type="button" class="btn btn-info" matTooltip="Delete This record" (click)="deleteUser(element.id)"><i class="fas fa-trash-alt"></i></button> </td>
+      <th mat-header-cell *matHeaderCellDef> Delete</th>
+      <td mat-cell *matCellDef="let element"><button mat-button   type="button" class="btn btn-info" matTooltip="Delete This record" (click)="deleteUser(element.id)"><i class="fas fa-trash-alt"></i></button> </td>
     </ng-container>
-
+  
     <ng-container matColumnDef="addUser" style="display: none;">
         <th mat-header-cell *matHeaderCellDef> 
-            <div class="example-button-container">
-                <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon"[routerLink]="['/userdetail'] ">
+            <div class="example-button-container" >
+                <button mat-raised-button  aria-label="Example icon button with a menu icon" matTooltip=" Add new User" (click)="newUser(uid)" >
                     <i class="fa fa-plus" aria-hidden="true"></i>
                 </button>
               </div>
         </th>
         <td mat-cell style="display: none;" *matCellDef="let element"><button mat-raised-button color="warn" type="button" class="btn btn-info" matTooltip="Click Edit Button" (click)="deleteUser(element.id)">Delete</button> </td>
       </ng-container>
-
+  
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr
-      mat-row
-      (click)="clickedRows.add(row)"
-      [class.demo-row-is-clicked]="clickedRows.has(row)"
-      
-      *matRowDef="let row; columns: displayedColumns;" ></tr>
-      
-    
+  
   </table>
-
- 
