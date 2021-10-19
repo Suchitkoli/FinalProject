@@ -48,12 +48,12 @@ export class UserdetailComponent implements OnInit {
           last_name:['',[Validators.required]],
           date_of_birth:['',[Validators.required]],
           email:['',[Validators.required,  Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]],
-          phone_no:['',[Validators.required,Validators.pattern("pattern=[\d{10}$]")]],
+          phone_no:['',[Validators.required,Validators.maxLength(10),Validators.minLength(10)]],
         }),
         this.formbulider.group({
           add_city:['',[Validators.required]],
           add_state:['',[Validators.required]],
-          add_zip:['',[Validators.required]],
+          add_zip:['',[Validators.required,Validators.maxLength(6),Validators.minLength(6)]],
           createdon: new Date()
 
         }),
@@ -91,13 +91,7 @@ export class UserdetailComponent implements OnInit {
 users:Array<User>=new Array()
   onFormSubmit() {
     this.dataSaved = false;
-    const user = this.appForm.value
-    console.log("user created",user)
-
-    console.log("Users information",this.users)
-
     let userinfo:User =new User()
-
     userinfo.first_name=this.getValue(0,'first_name')
     userinfo.middle_name=this.getValue(0,'middle_name')
     userinfo.last_name=this.getValue(0,'last_name')
@@ -108,8 +102,6 @@ users:Array<User>=new Array()
     userinfo.add_state=this.getValue(1,'add_state')
     userinfo.add_zip=this.getValue(1,'add_zip')
     userinfo.createdon=this.getValue(1,'createdon')
-    console.log("get value",userinfo)
-    
     this.CreateUser(userinfo);
   
 }
@@ -137,7 +129,8 @@ users:Array<User>=new Array()
       this.formArray.controls[1].setValue({
         add_city:(user.add_city),
         add_state:(user.add_state),
-        add_zip:(user.add_zip)
+        add_zip:(user.add_zip),
+        createdon:(user.createdon)
       })
     });
 
