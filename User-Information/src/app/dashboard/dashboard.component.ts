@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
   dataSaved = false;
   userForm: any
   length!: User[]
+  showSpinner=true
   userInfo!: Observable<User[]>
   userIdUpdate: string | undefined | null
   massage: string | undefined | null
@@ -27,9 +28,12 @@ export class DashboardComponent implements OnInit {
     this.loadAllUsers();
   }
   loadAllUsers() {
+   
     this.userInfo = this.userService.getAllUser()
-    var itemsLength = Object.keys(this.userInfo);
-    console.log("Length", itemsLength)
+    setTimeout(()=>{
+      this.showSpinner=false
+    },3000);
+ 
   }
   loadUserEdit(userid: string) {
     this.router.navigate(['/userdetail', userid])

@@ -6,7 +6,7 @@
        <app-step1 [formGroup]="formArray?.get([0])" ></app-step1>
         </mat-step><br><br>
 
-        <mat-step [stepControl]="formArray?.get([1])" *ngIf="formArray?.get([0]).valid" >
+        <mat-step [stepControl]="formArray?.get([1])"  >
           <ng-template matStepLabel>Fill out your Address</ng-template><br><br>
            <app-step2 [formGroup]="formArray?.get([1])" ></app-step2>
            
@@ -14,8 +14,8 @@
             <mat-step  *ngIf="formArray?.get([1]).valid" >
               <ng-template matStepLabel>Review</ng-template>
               <app-step3 [formGroup]="appForm" #formDirective="ngForm" ></app-step3>
-             
-               <button type="submit" mat-raised-button [routerLink]="['/dashboard']" (click)="onFormSubmit()">Submit</button> 
+              <button mat-raised-button matStepperPrevious style="margin-right:16px;"  matTooltip="Click Back Button" > <i class="fa fa-arrow-left" aria-hidden="true"></i> &nbsp; Back</button>
+               <button type="submit" mat-raised-button color="accent" style="margin-right:16px;" [routerLink]="['/dashboard']"  matTooltip="Click Submit Button" (click)="onFormSubmit()"> <i class="fa fa-paper-plane" aria-hidden="true"></i> &nbsp; Submit</button> 
             </mat-step>
 
 </mat-stepper>

@@ -34,7 +34,8 @@ export class UserdetailComponent implements OnInit {
   userInfo!:Observable<User[]>
   userIdUpdate :string|undefined|null
   message:string|undefined|null
-  uid:any
+  uid:string
+  num:number
   ngOnInit(): void {
 
     this.appForm=this.formbulider.group( {
@@ -61,9 +62,14 @@ export class UserdetailComponent implements OnInit {
       } );
       this.activatedroute.paramMap.subscribe(param => {
         this.uid=param.get('id');
-        console.log("uid",param)
-        if(this.uid != -1){
-          this.loadUserEdit(this.uid)
+         this.num=parseInt(this.uid)
+        console.log("uid",typeof(this.num))
+      
+
+      
+
+        if(this.num != -1){
+          this.loadUserEdit(this.num)
         }
       })
     
@@ -96,6 +102,7 @@ users:Array<User>=new Array()
     userinfo.middle_name=this.getValue(0,'middle_name')
     userinfo.last_name=this.getValue(0,'last_name')
     userinfo.date_of_birth=this.getValue(0,'date_of_birth')
+    console.log("date",userinfo.date_of_birth)
     userinfo.email=this.getValue(0,'email')
     userinfo.phone_no=this.getValue(0,'phone_no')
     userinfo.add_city=this.getValue(1,'add_city')
@@ -107,13 +114,12 @@ users:Array<User>=new Array()
 }
 
 
-  loadUserEdit(userid: string) {
+  loadUserEdit(userid: number) {
     this.userservice.getUserById(this.uid).subscribe(user => {
       console.log("user",user)
       this.message = null;
       this.dataSaved = false;
       this.userIdUpdate = user.id;
-      let userinfo:User=new User;
      this.formArray.controls[0].setValue(
      {
        id:(user.id),

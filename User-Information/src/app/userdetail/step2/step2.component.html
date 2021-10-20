@@ -1,3 +1,4 @@
+
 <form [formGroup]="appForm" >
         
     <mat-form-field appearance="fill"  >
@@ -16,6 +17,7 @@
     </mat-form-field>
     <div>
       <!-- <button type="submit" matStepperNext mat-raised-button color="accent" matTooltip="Click Submit Button" >Next</button> -->
-      <button mat-button matStepperNext   matTooltip="Click Submit Button">Next</button>
+      <button mat-raised-button matStepperPrevious style="margin-right:16px;"  matTooltip="Click Back Button" > <i class="fa fa-arrow-left" aria-hidden="true"></i> &nbsp; Back</button>
+      <button mat-raised-button matStepperNext style='margin-right:16px' color="primary" [disabled]="!appForm.valid"  matTooltip="Click Next Button"> <i class="fa fa-arrow-right" aria-hidden="true"></i> &nbsp; Next</button>
     </div>
   </form>

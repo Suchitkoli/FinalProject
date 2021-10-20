@@ -1,7 +1,8 @@
+<div *ngIf="showSpinner" class="loader-container" >
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</div >
 
-
-
-  <table mat-table [dataSource]="userInfo" class="mat-elevation-z8" style="  max-width: 100%; min-width: 100%;  background-color: rgb(255, 255, 255);  ">
+  <table mat-table [dataSource]="userInfo" class="mat-elevation-z8"  *ngIf="!showSpinner"  style="   max-width: 100%; min-width: 100%;  background-color: rgb(255, 255, 255);  ">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
@@ -72,7 +73,7 @@
     <ng-container matColumnDef="addUser" style="display: none;">
         <th mat-header-cell *matHeaderCellDef> 
             <div class="example-button-container" >
-                <button mat-raised-button  aria-label="Example icon button with a menu icon" matTooltip=" Add new User" (click)="newUser(uid)" >
+                <button mat-button  aria-label="Example icon button with a menu icon" matTooltip=" Add new User" (click)="newUser(uid)" >
                     <i class="fa fa-plus" aria-hidden="true"></i>
                 </button>
               </div>
